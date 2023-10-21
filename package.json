@@ -1,0 +1,22 @@
+{
+  "name": "chatbot-tele",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thanhtoan0306/chatbot-tele2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thanhtoan0306/chatbot-tele2/issues"
+  },
+  "homepage": "https://github.com/thanhtoan0306/chatbot-tele2#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.63.0"
+  }
+}
