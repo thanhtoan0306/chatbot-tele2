@@ -1,6 +1,11 @@
 const TelegramBot = require("node-telegram-bot-api");
 const token = "6960124967:AAHvCr9g4yoY0g5cgEKcD6Efv-3NXUgiehE";
 const axios = require("axios");
+const https = require("https");
+// Create an HTTPS agent with a minimum DH key size
+const agent = new https.Agent({
+  minDHSize: 2048, // Adjust the minimum key size as needed
+});
 
 // Helper function to format the date as DD/MM/YYYY
 function formatDate(date) {
@@ -31,6 +36,7 @@ async function makeRequest(callback) {
     "sec-ch-ua": '"Chromium";v="118", "Google Chrome";v="118", "Not=A?Brand";v="99"',
     "sec-ch-ua-mobile": "?0",
     "sec-ch-ua-platform": '"macOS"',
+    httpsAgent: agent
   };
   // Get the current date
   const today = new Date();
