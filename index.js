@@ -2,6 +2,14 @@ const TelegramBot = require("node-telegram-bot-api");
 const token = "6960124967:AAHvCr9g4yoY0g5cgEKcD6Efv-3NXUgiehE";
 const axios = require("axios");
 
+// Helper function to format the date as DD/MM/YYYY
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 async function makeRequest(callback) {
   const url = "https://www.evnhcmc.vn/Tracuu/ajax_dienNangTieuThuTheoNgay";
   const headers = {
@@ -24,7 +32,17 @@ async function makeRequest(callback) {
     "sec-ch-ua-mobile": "?0",
     "sec-ch-ua-platform": '"macOS"',
   };
-  const data = "token=&input_makh=PE03000086905&input_tungay=06%2F10%2F2023&input_denngay=21%2F10%2F2023";
+  // Get the current date
+  const today = new Date();
+
+  // Get the first day of the current month
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  // Format the dates as DD/MM/YYYY
+  const firstDayFormatted = formatDate(firstDayOfMonth);
+  const todayFormatted = formatDate(today);
+
+  const data = `token=&input_makh=PE03000086905&input_tungay=${firstDayFormatted}&input_denngay=${todayFormatted}`;
 
   try {
     const response = await axios.post(url, data, { headers });
@@ -36,7 +54,7 @@ async function makeRequest(callback) {
 }
 
 makeRequest((msg) => {
-    console.log(msg, msg?.data?.sanluong_tong?.Tong);
+  console.log(msg, msg?.data?.sanluong_tong?.Tong);
 });
 
 // Create a new bot instance
@@ -61,12 +79,12 @@ bot.onText(/\/start (.+)/, (msg, match) => {
 
   // Schedule the "Good morning" message at the specified time
   timeoutId = setTimeout(() => {
-      makeRequest((msg) => {
-          console.log(msg, msg?.data?.sanluong_tong?.Tong);
-          bot.sendMessage(chatId, `Chatbot của thanhtoan 🤖. Chỉ số điện hôm qua là: ${msg?.data?.sanluong_tong?.Tong}`);
-      });
+    makeRequest((msg) => {
+      console.log(msg, msg?.data?.sanluong_tong?.Tong);
+      bot.sendMessage(chatId, `Chatbot của thanhtoan 🤖. Chỉ số điện tiêu thụ hiện tại là: ${msg?.data?.sanluong_tong?.Tong}`);
+    });
   }, delay);
 
   // Send a confirmation message to the user
-  bot.sendMessage(chatId, `You will receive a Chỉ số điện hôm qua message every day at ${time}.`);
+  bot.sendMessage(chatId, `Bạn sẽ nhận tin nhắn Chỉ số điện tiêu thụ mỗi ngày vào ${time}.`);
 });
